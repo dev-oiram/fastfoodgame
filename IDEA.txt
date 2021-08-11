@@ -1,6 +1,24 @@
-Fast luggage (Nombre)
+Fast luggage (Nombre propuesto)
 
--MPV (Minimal Product Viable)
--Prototyping
+-MPV (Minimal Product Viable) (Producto Minimo Viable)
+-Prototipado
+
+-INTRODUCCION:
+-El usuario debera acomodar las figuras de diferente forma
+en 3 carriles diferentes los cuales aceptas ciertos tipos.
+
+-Se cuenta con un limite de tiempo para terminar.
+
+-(Bonus)::Algunas figuras otorgan segundos adicionales si se 
+acomodan de manera correcta de lo contrario lo restan.
+
+-Si se equivoca se penaliza mostrando el error y dejando 
+inactivos los controles por un corto tiempo mientras 
+el reloj avanza.
+
+
+
+
+
 
 

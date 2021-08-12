@@ -5,7 +5,7 @@ Fast luggage (Nombre propuesto)
 
 -INTRODUCCION:
 -El usuario debera acomodar las figuras de diferente forma
-en 3 carriles diferentes los cuales aceptas ciertos tipos.
+en 3 carriles diferentes.
 
 -Se cuenta con un limite de tiempo para terminar.
 

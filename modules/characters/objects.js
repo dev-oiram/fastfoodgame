@@ -1,4 +1,4 @@
-import basicSprite from './simpleSprite'
+import { basicSprite } from './simpleSprite'
 
 class Element {
     constructor(x,y,width,height,spritePath) {
@@ -7,6 +7,7 @@ class Element {
 		this.width = width;
 		this.height = height;
 		this.spritePath = spritePath;
+        this.setSprite();
     }
 
     setSprite(){
@@ -17,6 +18,6 @@ class Element {
     getSprite(){ return this.sprite; }
 }
 
-export default {
+export {
     Element
 }

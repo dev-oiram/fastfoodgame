@@ -1,11 +1,9 @@
-import * as PIXI from 'pixi.js';
+import { Sprite } from 'pixi.js';
 
-//Spriter(TexturePath,x,y,width,height)
-var basicSprite = (texturePath,x,y,wi,he) => {
+//basicSprite(TexturePath,x,y,width,height)
+function basicSprite(texturePath,x,y,wi,he) {
 	var sprt;
-	sprt = new PIXI.Sprite(
-    PIXI.loader.resources[texturePath].texture
-  	);
+	sprt = Sprite.from(texturePath);
   	sprt.width = wi;
   	sprt.height = he;
   	sprt.x = x;
@@ -14,6 +12,6 @@ var basicSprite = (texturePath,x,y,wi,he) => {
   	return sprt;
 }
 
-export default {
+export {
     basicSprite
 }

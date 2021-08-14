@@ -1,4 +1,4 @@
-import { settings, GC_MODES, Application, Loader } from 'pixi.js-legacy';
+import { settings, GC_MODES, Application, Loader, Ticker } from 'pixi.js-legacy';
 
 // Game config object
 const config = {
@@ -15,11 +15,11 @@ var app = new Application(config.gameWidth, config.gameHeight);
 app.renderer.backgroundColor = config.color;
 app.autoResize = true;
 
-var gameApp = app.view
+var gameApp = app
 
 // Aling canvas to the center
-gameApp.style.display = "block";
-gameApp.style.margin = "0 auto";
+gameApp.view.style.display = "block";
+gameApp.view.style.margin = "0 auto";
 
 // Define the stage
 var stage = app.stage
@@ -27,4 +27,7 @@ var stage = app.stage
 // Define assets loader
 var loader = new Loader()
 
-export { config, gameApp, stage, loader }
+// Define ticker
+var ticker = new Ticker()
+
+export { config, gameApp, stage, loader, ticker }

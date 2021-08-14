@@ -1,19 +1,25 @@
-import { config, gameApp, stage, loader } from './config/config'
+import { config, gameApp, stage, loader, ticker } from './config/config'
 import { assets } from './config/assets'
-import { Element } from './modules/characters/objects'
+import { Element } from './modules/objects'
+import { GameScreen } from './modules/screens'
 
 
 // Adds the app canvas to the html <body>
-document.body.appendChild(gameApp);
+document.body.appendChild(gameApp.view);
 
 // Load assets and start Game
 loader
   .add(assets)
-  .load(startGame);
+  .load(start);
 
 
 // Start Game
-function startGame() {
-      let redBox = new Element(config.gameWidth/2,config.gameHeight/2,50,50,"a_redBox")
-      stage.addChild(redBox.getSprite())
+function start() {
+    // Creacion de Screens
+    let gameScreen = new GameScreen(stage)
+
+    gameApp.ticker.add((deltaTime) => {
+        // Update Loop
+        gameScreen.update(deltaTime)
+    });
 }

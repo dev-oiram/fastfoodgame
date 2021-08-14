@@ -1,6 +1,5 @@
-import { config, gameApp, stage, loader, ticker } from './config/config'
+import { gameApp, stage, loader } from './config/config'
 import { assets } from './config/assets'
-import { Element } from './modules/objects'
 import { GameScreen } from './modules/screens'
 
 

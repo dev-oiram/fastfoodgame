@@ -53,6 +53,7 @@ class Food extends ObjectGame {
         this.validating = false
         
         // variables
+        this.active = false
         this.valid = false
         this.lastY = y
         this.lastX = x
@@ -67,7 +68,7 @@ class Food extends ObjectGame {
 
     // Move DOWN
     down() {
-        if(!this.moving && this.reel < 4){
+        if(!this.moving && this.reel < 4 && this.active){
             this.moveDown = true
             this.moving = true
         }
@@ -75,7 +76,7 @@ class Food extends ObjectGame {
 
     // Move UP
     up() {
-        if(!this.moving && this.reel > 1){
+        if(!this.moving && this.reel > 1 && this.active){
             this.moveUp = true
             this.moving = true
         }
@@ -83,10 +84,16 @@ class Food extends ObjectGame {
 
     // Move RIGHT
     right() {
-        if(!this.moving){
+        if(!this.moving && this.active){
             this.moveRight = true
             this.moving = true
+            this.active = false
         }
+    }
+
+    left() {
+        //this.movingLeft = true
+        this.sprite.x -= 55
     }
 
     // Override idel method
@@ -94,6 +101,15 @@ class Food extends ObjectGame {
         super.idle(delta)
         this.spriteDish.width +=  (Math.sin(this.count) * 0.3) * delta
         this.spriteDish.height +=  (Math.cos(this.count) * 1) * delta
+    }
+
+    // Metod to change active status
+    setActive(status) {
+        this.sprite.x = 100
+        this.sprite.y = 150
+        this.lastX = 100
+        this.lastY = 150
+        this.active = status
     }
 
     update(delta) {
@@ -146,7 +162,7 @@ class Food extends ObjectGame {
         if(this.moveRight) {
             if(this.sprite.x >= this.lastX + (450/2)){
                 if(this.sprite.x >= this.lastX + this.distance){
-                    //console.log("Position: "+this.sprite.x)
+                    //console.log("Position: "+this.sprite.y)
                     this.spriteDish.visible = true
                     this.sprite.visible = false
                     this.lastX = this.spriteDish.x

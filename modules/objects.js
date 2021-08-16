@@ -41,11 +41,14 @@ class Food extends ObjectGame {
         this.speed = 8
         this.acceleration = 1
 
+        // States
         this.moving = false
         this.moveDown = false
         this.moveUp = false
         this.moveRight = false
-
+        this.validating = false
+        
+        this.valid = false
         this.lastY = y
         this.lastX = x
         this.reel = 1
@@ -79,11 +82,14 @@ class Food extends ObjectGame {
 
     update(delta) {
         super.update(delta)
+        // Update Sprites
+        this.spriteDish.x = this.sprite.x
+        this.spriteDish.y = this.sprite.y
 
         if(this.moveDown){
             if(this.sprite.y >= this.lastY + (this.distance/2)){
                 if(this.sprite.y >= this.lastY + this.distance){
-                    console.log("Position: "+this.sprite.y)
+                    //console.log("Position: "+this.sprite.y)
                     this.lastY = this.sprite.y
                     this.moveDown = false
                     this.moving = false
@@ -102,7 +108,7 @@ class Food extends ObjectGame {
         if(this.moveUp){
             if(this.sprite.y <= this.lastY - (this.distance/2)){
                 if(this.sprite.y <= this.lastY - this.distance){
-                    console.log("Position: "+this.sprite.y)
+                    //console.log("Position: "+this.sprite.y)
                     this.lastY = this.sprite.y
                     this.moveUp = false
                     this.moving = false
@@ -119,13 +125,16 @@ class Food extends ObjectGame {
         }
 
         if(this.moveRight) {
-            if(this.sprite.x >= this.lastX + (500/2)){
-                if(this.sprite.x >= this.lastY + this.distance){
-                    console.log("Position: "+this.sprite.x)
-                    this.lastX = this.sprite.x
+            if(this.sprite.x >= this.lastX + (450/2)){
+                if(this.sprite.x >= this.lastX + this.distance){
+                    //console.log("Position: "+this.sprite.x)
+                    this.spriteDish.visible = true
+                    this.sprite.visible = false
+                    this.lastX = this.spriteDish.x
                     this.moveRight = false
-                    this.moving = false
                     this.velocity = 0
+                    this.validate()
+
                 }else{
                     this.velocity -= this.acceleration * delta;
                     this.sprite.x += this.speed * this.velocity * delta;
@@ -135,6 +144,15 @@ class Food extends ObjectGame {
                 this.sprite.x += this.speed * this.velocity * delta;
             }
         }
+
+        if(this.validating) {
+            this.sprite.x += 1 * delta
+        }
+    }
+
+    validate() {
+        this.valid = true
+        this.validating = true
     }
 
     getSpriteDish() { return this.spriteDish }

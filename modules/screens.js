@@ -10,11 +10,11 @@ class GameScreen {
         this.mainStage = stage;
 
         this.objectArray = [
-            { name: "Pie", data: new Food(200,150,70,70,"apple_pie","apple_pie_dish") },
-            { name: "Dish", data: new Dish(300,150,70,70,"dish") },
-            { name: "Dish", data: new Dish(300,263,70,70,"dish") },
-            { name: "Dish", data: new Dish(300,391,70,70,"dish") },
-            { name: "Dish", data: new Dish(300,511,70,70,"dish") }
+            { name: "Pie", data: new Food(100,150,70,70,"apple_pie","apple_pie_dish") },
+            { name: "Dish", data: new Dish(250,150,70,70,"dish_pile") },
+            { name: "Dish", data: new Dish(250,263,70,70,"dish_pile") },
+            { name: "Dish", data: new Dish(250,391,70,70,"dish_pile") },
+            { name: "Dish", data: new Dish(250,511,70,70,"dish_pile") }
         ]
         this.setup();
     }
@@ -45,11 +45,6 @@ class GameScreen {
         window.onkeydown = (key) =>{
             if(key.code == "ArrowDown"){
                 this.getObj('Pie').down()
-                // let obj = { 
-                //     name: "PieDish", 
-                //     data: new Dish(this.getObj('Pie').getSprite().x+300,150,70,70,"apple_pie_dish") 
-                // }
-                // this.addObject(obj)
             }
             if(key.code == "ArrowUp"){
                 this.getObj('Pie').up()
@@ -67,6 +62,14 @@ class GameScreen {
         this.container = status
     }
 
+    updateScreen() {
+        // Set Object on Screen
+        this.objectArray.forEach(obj => {
+            this.container.addChild(obj.data.getSprite())
+            this.container.removeChild
+        });
+    }
+
     addObject(obj) {
         this.objectArray.push(obj)
         // Set Object on Screen
@@ -78,8 +81,13 @@ class GameScreen {
     // Screen Update
     update(delta) {
         // Update objects on Screen
-        this.objectArray.forEach(obj => {
+        this.objectArray.forEach((obj,index) => {
             obj.data.update(delta)
+            if(obj.data.sprite.x > 700){
+                this.objectArray.splice(index, 1);
+                this.container.removeChild(obj.data.getSprite())
+                this.container.removeChild(obj.data.getSpriteDish())
+            }
         });
     }
 }

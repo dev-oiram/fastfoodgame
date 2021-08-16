@@ -1,8 +1,15 @@
-import { Container, TilingSprite } from 'pixi.js-legacy'
+import { Container } from 'pixi.js-legacy'
 import { Food, Dish } from '../modules/objects'
+import { foodAssets } from '../config/assets'
 
 
 const sprtSize = 70
+
+function randomNumber() {
+    let min = 0
+    let max = (foodAssets.length)/2
+    return parseInt(Math.random() * (max - min) + min)
+}
 
 class GameScreen {
     constructor(stage) {
@@ -12,12 +19,19 @@ class GameScreen {
         this.currentArrayPosition = 0
 
         //===================
+        let foodSelectArray = []
+        for (let i = 0; i <= foodAssets.length-1; i=i+2) {
+            let obj = { one: foodAssets[i].name, two: foodAssets[i+1].name }
+            foodSelectArray.push(obj)
+        }
+
         this.income = new Container()
         this.incomeArray = []
         let xPosition = 160
-        for (let i = 0; i <= 10; i++) {
+        for (let i = 0; i <= 15; i++) {
             xPosition += 55
-            let obj = new Food(xPosition,40,sprtSize,sprtSize,"apple_pie","apple_pie_dish")
+            let rNum = randomNumber()
+            let obj = new Food(xPosition,40,sprtSize,sprtSize,foodSelectArray[rNum].one,foodSelectArray[rNum].two)
             this.incomeArray.push(obj)
         }
         this.incomeArray.forEach(el => {
@@ -41,9 +55,8 @@ class GameScreen {
     // Sets a new current food
     setNewActive() {
         if(this.currentArrayPosition <= this.incomeArray.length - 1){
-            console.log(this.currentArrayPosition)
             this.incomeArray.forEach(obj => {
-                if(!obj.active)
+                if(!obj.getActive())
                     obj.left()
             });
             let newFoodActive = this.incomeArray[this.currentArrayPosition]
@@ -66,6 +79,7 @@ class GameScreen {
 
     // Screen init
     setup() {
+
         // Set main Container
         this.mainStage.addChild(this.container)
 
@@ -93,7 +107,7 @@ class GameScreen {
         }
 
         window.onkeyup = (key) =>{
-            if(key.code == "ArrowRight"){
+            if(key.code == "Space"){
                 if(this.currentActiveFood != null){
                     this.currentActiveFood.right()
                     this.setNewActive()

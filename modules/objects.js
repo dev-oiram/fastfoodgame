@@ -87,7 +87,6 @@ class Food extends ObjectGame {
         if(!this.moving && this.active){
             this.moveRight = true
             this.moving = true
-            this.active = false
         }
     }
 
@@ -110,6 +109,10 @@ class Food extends ObjectGame {
         this.lastX = 100
         this.lastY = 150
         this.active = status
+    }
+
+    getActive() {
+        return this.active
     }
 
     update(delta) {

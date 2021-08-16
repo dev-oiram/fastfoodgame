@@ -37,6 +37,10 @@ const foodAssets = [
     { name: "omlet_dish", url: "../assets/omlet_dish.png" },
     { name: "pudding", url: "../assets/pudding.png" },
     { name: "pudding_dish", url: "../assets/pudding_dish.png" },
+    { name: "pizza", url: "../assets/pizza.png" },
+    { name: "pizza_dish", url: "../assets/pizza_dish.png" },
+    { name: "steak", url: "../assets/steak.png" },
+    { name: "steak_dish", url: "../assets/steak_dish.png" },
 ]
 
 var assets = [

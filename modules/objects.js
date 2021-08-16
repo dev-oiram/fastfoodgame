@@ -9,11 +9,12 @@ class ObjectGame {
             width,height)
     }
 
+    // Update Sprite
     update(delta) {
-        // Update Sprite
         this.idle(delta)
     }
 
+    // Basic Object Idle
     idle(delta) {
         this.sprite.width +=  (Math.sin(this.count) * 0.3) * delta
         this.sprite.height +=  (Math.cos(this.count) * 1) * delta
@@ -26,6 +27,7 @@ class ObjectGame {
 
 // ========================= Public Classes =====================================
 
+// Dish class Object
 class Dish extends ObjectGame {
     constructor(x,y,width,height,spritePath) {
         super(x,y,width,height,spritePath)
@@ -33,10 +35,12 @@ class Dish extends ObjectGame {
 }
 
 
-// Food Class Object
+// Food class Object
 class Food extends ObjectGame {
     constructor(x,y,width,height,spritePath,spritePathDish) {
         super(x,y,width,height,spritePath)
+        
+        // Move variables
         this.velocity = 0
         this.speed = 8
         this.acceleration = 1
@@ -48,17 +52,20 @@ class Food extends ObjectGame {
         this.moveRight = false
         this.validating = false
         
+        // variables
         this.valid = false
         this.lastY = y
         this.lastX = x
         this.reel = 1
         this.distance = 120
 
+        // additional Sprites
         this.spriteDish = basicSprite(spritePathDish,x,y,
             width,height)
         this.spriteDish.visible = false
     }
 
+    // Move DOWN
     down() {
         if(!this.moving && this.reel < 4){
             this.moveDown = true
@@ -66,6 +73,7 @@ class Food extends ObjectGame {
         }
     }
 
+    // Move UP
     up() {
         if(!this.moving && this.reel > 1){
             this.moveUp = true
@@ -73,6 +81,7 @@ class Food extends ObjectGame {
         }
     }
 
+    // Move RIGHT
     right() {
         if(!this.moving){
             this.moveRight = true
@@ -80,12 +89,20 @@ class Food extends ObjectGame {
         }
     }
 
+    // Override idel method
+    idle(delta) {
+        super.idle(delta)
+        this.spriteDish.width +=  (Math.sin(this.count) * 0.3) * delta
+        this.spriteDish.height +=  (Math.cos(this.count) * 1) * delta
+    }
+
     update(delta) {
         super.update(delta)
-        // Update Sprites
+        // Update additional Sprites
         this.spriteDish.x = this.sprite.x
         this.spriteDish.y = this.sprite.y
 
+        // Moving Down Sprite
         if(this.moveDown){
             if(this.sprite.y >= this.lastY + (this.distance/2)){
                 if(this.sprite.y >= this.lastY + this.distance){
@@ -105,6 +122,7 @@ class Food extends ObjectGame {
             }
         }
 
+        // Moving Up Sprite
         if(this.moveUp){
             if(this.sprite.y <= this.lastY - (this.distance/2)){
                 if(this.sprite.y <= this.lastY - this.distance){
@@ -124,6 +142,7 @@ class Food extends ObjectGame {
             }
         }
 
+        // Moving Right Sprite
         if(this.moveRight) {
             if(this.sprite.x >= this.lastX + (450/2)){
                 if(this.sprite.x >= this.lastX + this.distance){
@@ -145,11 +164,13 @@ class Food extends ObjectGame {
             }
         }
 
+        // Validating Sprite state
         if(this.validating) {
             this.sprite.x += 1 * delta
         }
     }
 
+    // Set Sprite validation
     validate() {
         this.valid = true
         this.validating = true

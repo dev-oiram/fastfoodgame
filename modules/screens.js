@@ -10,7 +10,7 @@ class GameScreen {
         this.mainStage = stage;
 
         this.objectArray = [
-            { name: "Pie", data: new Food(config.gameWidth/2,config.gameHeight/10,70,70,"apple_pie"), }
+            { name: "Pie", data: new Food(200,50,70,70,"apple_pie"), }
         ]
         this.setup();
     }
@@ -38,6 +38,9 @@ class GameScreen {
         window.onkeydown = (key) =>{
             if(key.code == "ArrowDown"){
                 this.getObj('Pie').down()
+            }
+            if(key.code == "ArrowUp"){
+                this.getObj('Pie').up()
             }
         }
 

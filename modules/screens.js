@@ -2,6 +2,8 @@ import { Container } from 'pixi.js-legacy'
 import { Food, Dish } from '../modules/objects'
 
 
+const sprtSize = 70
+
 class GameScreen {
     constructor(stage) {
         this.active = false;
@@ -10,11 +12,11 @@ class GameScreen {
 
         // Array of Objects for GameScreen pramas: (x,y,width,height,Sprite,additionSprite)
         this.objectArray = [
-            { name: "Pie", data: new Food(100,150,70,70,"apple_pie","apple_pie_dish") },
-            { name: "Dish", data: new Dish(250,150,70,70,"dish_pile") },
-            { name: "Dish", data: new Dish(250,263,70,70,"dish_pile") },
-            { name: "Dish", data: new Dish(250,391,70,70,"dish_pile") },
-            { name: "Dish", data: new Dish(250,511,70,70,"dish_pile") }
+            { name: "Pie", data: new Food(100,150,sprtSize,sprtSize,"apple_pie","apple_pie_dish") },
+            { name: "Dish", data: new Dish(250,150,sprtSize,sprtSize,"dish_pile") },
+            { name: "Dish", data: new Dish(250,263,sprtSize,sprtSize,"dish_pile") },
+            { name: "Dish", data: new Dish(250,391,sprtSize,sprtSize,"dish_pile") },
+            { name: "Dish", data: new Dish(250,511,sprtSize,sprtSize,"dish_pile") }
         ]
         this.setup(); // Screen Init
     }

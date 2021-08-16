@@ -28,7 +28,7 @@ class GameScreen {
         this.income = new Container()
         this.incomeArray = []
         let xPosition = 160
-        for (let i = 0; i <= 15; i++) {
+        for (let i = 0; i <= 20; i++) {
             xPosition += 55
             let rNum = randomNumber()
             let obj = new Food(xPosition,40,sprtSize,sprtSize,foodSelectArray[rNum].one,foodSelectArray[rNum].two)

@@ -1,12 +1,12 @@
-import { basicSprite } from './simpleSprite'
+import { basicSprite, basicText } from './simpleSprite'
 
-// Private Class
+// Private Classes
+
 class ObjectGame {
     constructor(x,y,width,height,spritePath) {
         this.count = 0
         this.movingRight = false
-        this.sprite = basicSprite(spritePath,x,y,
-            width,height)
+        this.sprite = basicSprite(spritePath,x,y,width,height)
     }
 
     // Update Sprite
@@ -24,8 +24,82 @@ class ObjectGame {
     getSprite(){ return this.sprite; }
 }
 
+class TextObject {
+    constructor(x,y,data) {
+        this.text = basicText(data)
+        this.text.x = x
+        this.text.y = y
+    }
+
+    setText(data) {
+        this.text.text = data
+    }
+
+    getText() {
+        return this.text
+    }
+}
+
 
 // ========================= Public Classes =====================================
+
+// TimeText
+class TimeText extends TextObject {
+    constructor(x,y,start) {
+        super(x,y,start)
+        this.timeOut = false
+        this.limit = start
+
+        setInterval(() =>{
+            this.limit -= 1
+        }, 1000)
+    }
+
+    updateTime(){
+        if(!this.timeOut){
+            if(this.limit >= 0 && !this.timeOut) {
+                this.setText(this.limit)
+            }else {
+                this.timeOut = true
+            }
+        }
+    }
+
+    getTimeOut() { return this.timeOut }
+
+
+    update(delta) {
+        this.updateTime()
+    }
+}
+
+// Shwon Object
+class ShownObject extends ObjectGame {
+    constructor(x,y,width,height,spritePath) {
+        super(x,y,width,height,spritePath)
+        this.rotRight = true
+    }
+
+    // Basic Object Idle
+    idle(delta) {
+        this.sprite.width +=  (Math.sin(this.count) * 0.3) * delta
+        this.sprite.height +=  (Math.cos(this.count) * 1) * delta
+        this.count += 0.6
+
+        if(this.sprite.rotation > 0.4 && this.rotRight)
+            this.rotRight = false
+
+        if(this.sprite.rotation < -0.4 && !this.rotRight)
+            this.rotRight = true
+
+
+        if(this.rotRight)
+            this.sprite.rotation += 0.05
+        else
+            this.sprite.rotation -= 0.05
+    }
+    
+}
 
 // Dish class Object
 class Dish extends ObjectGame {
@@ -199,6 +273,8 @@ class Food extends ObjectGame {
 }
 
 export {
+    ShownObject,
     Food,
-    Dish
+    Dish,
+    TimeText
 }

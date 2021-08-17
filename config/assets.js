@@ -45,6 +45,8 @@ const foodAssets = [
 ]
 
 var assets = [
+    // Additional Assets
+    { name: "stopwatch", url: "../assets/stopwatch.png" },
     // Dishes
     { name: "dish", url: "../assets/dish.png" },
     { name: "dish_pile", url: "../assets/dish_pile.png" },

@@ -1,4 +1,4 @@
-import { Sprite } from 'pixi.js-legacy';
+import { Sprite, Text } from 'pixi.js-legacy';
 
 //basicSprite(TexturePath,x,y,width,height)
 function basicSprite(texturePath,x,y,wi,he) {
@@ -12,6 +12,14 @@ function basicSprite(texturePath,x,y,wi,he) {
   	return sprt;
 }
 
+function basicText(text) {
+	var txt;
+	txt =  new Text(text);
+	return txt
+}
+
+
 export {
-    basicSprite
+    basicSprite,
+	basicText
 }

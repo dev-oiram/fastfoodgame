@@ -1,5 +1,5 @@
 import { Container } from 'pixi.js-legacy'
-import { Food, Dish } from '../modules/objects'
+import { ShownObject, Food, Dish, TimeText } from '../modules/objects'
 import { foodAssets, sound } from '../config/assets'
 
 
@@ -15,8 +15,10 @@ class GameScreen {
     constructor(stage) {
         this.container = new Container();
         this.mainStage = stage;
+        this.noIncome = false
         this.currentActiveFood = null
         this.currentArrayPosition = 0
+        this.timeText = new TimeText(60,20,10)
 
         //===================
         let foodSelectArray = []
@@ -27,7 +29,7 @@ class GameScreen {
 
         this.income = new Container()
         this.incomeArray = []
-        let xPosition = 160
+        let xPosition = 195
         for (let i = 0; i <= 20; i++) {
             xPosition += 55
             let rNum = randomNumber()
@@ -44,6 +46,7 @@ class GameScreen {
         // Array of Objects for GameScreen pramas: (x,y,width,height,Sprite,additionSprite)
         this.objectArray = [
             //{ name: "Pie", data: new Food(100,150,sprtSize,sprtSize,"apple_pie","apple_pie_dish") },
+            { name: "StopWatch", data: new ShownObject(30,30,50,50,"stopwatch") },
             { name: "Dish", data: new Dish(250,150,sprtSize,sprtSize,"dish_pile") },
             { name: "Dish", data: new Dish(250,263,sprtSize,sprtSize,"dish_pile") },
             { name: "Dish", data: new Dish(250,391,sprtSize,sprtSize,"dish_pile") },
@@ -63,6 +66,8 @@ class GameScreen {
             newFoodActive.setActive(true)
             this.currentActiveFood = newFoodActive
             this.currentArrayPosition ++
+        }else{
+            this.noIncome = true
         }
     }
 
@@ -80,7 +85,10 @@ class GameScreen {
     // Screen init
     setup() {
         sound.play('musicStart',{loop:true})
-        
+
+        // Timer
+        this.container.addChild(this.timeText.getText())
+
         // Set main Container
         this.mainStage.addChild(this.container)
 
@@ -109,10 +117,13 @@ class GameScreen {
         }
 
         window.onkeyup = (key) => {
-            if(key.code == "Space"){
-                if(this.currentActiveFood != null){
-                    this.currentActiveFood.right()
-                    if(this.currentActiveFood.moveRight) { this.setNewActive() }
+            // Check for timeout
+            if(!this.timeText.getTimeOut()){
+                if(key.code == "Space"){
+                    if(this.currentActiveFood != null){
+                        this.currentActiveFood.right()
+                        if(this.currentActiveFood.moveRight) { this.setNewActive() }
+                    }
                 }
             }
         }
@@ -141,17 +152,26 @@ class GameScreen {
     // Screen Update
     update(delta) {
         // Update objects on Screen
-        this.objectArray.forEach((obj,index) => {
-            obj.data.update(delta)
-            if(obj.data.sprite.x > 700){
-                this.objectArray.splice(index, 1);
-                this.removeObject(obj.data)
-            }
-        });
 
-        this.incomeArray.forEach((obj,index) => {
-            obj.update(delta)
-        });
+        // Check for timeout
+        if(!this.timeText.getTimeOut() || this.noIncome){
+            this.objectArray.forEach((obj,index) => {
+                obj.data.update(delta)
+                if(obj.data.sprite.x > 700){
+                    this.objectArray.splice(index, 1);
+                    this.removeObject(obj.data)
+                }
+            });
+    
+            this.incomeArray.forEach((obj,index) => {
+                obj.update(delta)
+            });
+    
+            this.timeText.update(delta)
+        }else{
+            sound.stop('musicStart')
+        }
+
     }
 }
 

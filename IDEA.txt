@@ -9,12 +9,12 @@ en 3 carriles diferentes.
 
 -Se cuenta con un limite de tiempo para terminar.
 
--(Bonus)::Algunas figuras otorgan segundos adicionales si se 
-acomodan de manera correcta de lo contrario lo restan.
-
 -Si se equivoca se penaliza mostrando el error y dejando 
 inactivos los controles por un corto tiempo mientras 
 el reloj avanza.
+
+-(Bonus)::Algunas figuras otorgan segundos adicionales si se 
+acomodan de manera correcta de lo contrario lo restan.
 
 
 

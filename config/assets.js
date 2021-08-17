@@ -1,3 +1,4 @@
+import { sound } from '@pixi/sound';
 
 const foodAssets = [
     // Food
@@ -47,8 +48,14 @@ var assets = [
     // Dishes
     { name: "dish", url: "../assets/dish.png" },
     { name: "dish_pile", url: "../assets/dish_pile.png" },
+    // Sound & Music
+    { name: "gameMusic", url: "../assets/sounds/GameOn.mp3" },
 ]
 
 assets.push(...foodAssets)
 
-export { assets, foodAssets }
+
+// Load Sounds & Music
+sound.add('musicStart', '../assets/sounds/GameOn.mp3');
+
+export { assets, foodAssets, sound }

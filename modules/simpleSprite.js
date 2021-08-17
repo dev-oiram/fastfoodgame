@@ -1,4 +1,4 @@
-import { Sprite } from 'pixi.js';
+import { Sprite } from 'pixi.js-legacy';
 
 //basicSprite(TexturePath,x,y,width,height)
 function basicSprite(texturePath,x,y,wi,he) {

@@ -1,6 +1,6 @@
 import { Container } from 'pixi.js-legacy'
 import { Food, Dish } from '../modules/objects'
-import { foodAssets } from '../config/assets'
+import { foodAssets, sound } from '../config/assets'
 
 
 const sprtSize = 70
@@ -79,7 +79,8 @@ class GameScreen {
 
     // Screen init
     setup() {
-
+        sound.play('musicStart',{loop:true})
+        
         // Set main Container
         this.mainStage.addChild(this.container)
 
@@ -104,13 +105,14 @@ class GameScreen {
                 if(this.currentActiveFood != null)
                     this.currentActiveFood.up()
             }
+            
         }
 
-        window.onkeyup = (key) =>{
+        window.onkeyup = (key) => {
             if(key.code == "Space"){
                 if(this.currentActiveFood != null){
                     this.currentActiveFood.right()
-                    this.setNewActive()
+                    if(this.currentActiveFood.moveRight) { this.setNewActive() }
                 }
             }
         }

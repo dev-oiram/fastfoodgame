@@ -1,6 +1,7 @@
 import { Container } from 'pixi.js-legacy'
-import { ShownObject, Food, Dish, TimeText } from '../modules/objects'
+import { GameBackground, ShownObject, Food, Dish, TimeText } from '../modules/objects'
 import { foodAssets, sound } from '../config/assets'
+import { config } from '../config/config'
 
 
 const sprtSize = 70
@@ -18,9 +19,12 @@ class GameScreen {
         this.noIncome = false
         this.currentActiveFood = null
         this.currentArrayPosition = 0
-        this.timeText = new TimeText(60,20,10)
+        this.foodCount = 50
+        this.timeText = new TimeText(60,20,100) // Set Timer
 
-        //===================
+        this.loadBackground() // Load GameScreen Background
+
+        //=========================================
         let foodSelectArray = []
         for (let i = 0; i <= foodAssets.length-1; i=i+2) {
             let obj = { one: foodAssets[i].name, two: foodAssets[i+1].name }
@@ -30,7 +34,7 @@ class GameScreen {
         this.income = new Container()
         this.incomeArray = []
         let xPosition = 195
-        for (let i = 0; i <= 20; i++) {
+        for (let i = 0; i <= this.foodCount; i++) {
             xPosition += 55
             let rNum = randomNumber()
             let obj = new Food(xPosition,40,sprtSize,sprtSize,foodSelectArray[rNum].one,foodSelectArray[rNum].two)
@@ -41,7 +45,7 @@ class GameScreen {
             this.income.addChild(el.getSpriteDish())
         });
         this.container.addChild(this.income)
-        //====================
+        //=========================================
 
         // Array of Objects for GameScreen pramas: (x,y,width,height,Sprite,additionSprite)
         this.objectArray = [
@@ -53,6 +57,13 @@ class GameScreen {
             { name: "Dish", data: new Dish(250,511,sprtSize,sprtSize,"dish_pile") }
         ]
         this.setup(); // Screen Init
+    }
+
+    loadBackground() {
+        this.background = new GameBackground(config.gameWidth/2,config.gameHeight/2,
+            config.gameWidth,config.gameHeight,"background")
+
+        this.container.addChild(this.background.getSprite())
     }
 
     // Sets a new current food

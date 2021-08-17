@@ -46,6 +46,7 @@ const foodAssets = [
 
 var assets = [
     // Additional Assets
+    { name: "background", url: "../assets/background.png" },
     { name: "stopwatch", url: "../assets/stopwatch.png" },
     // Dishes
     { name: "dish", url: "../assets/dish.png" },

@@ -2,6 +2,16 @@ import { basicSprite, basicText } from './simpleSprite'
 
 // Private Classes
 
+// Static Object
+class StaticObject {
+    constructor(x,y,width,height,spritePath) {
+        this.sprite = basicSprite(spritePath,x,y,width,height)
+    }
+
+    getSprite(){ return this.sprite; }
+}
+
+// Game Objects with idle
 class ObjectGame {
     constructor(x,y,width,height,spritePath) {
         this.count = 0
@@ -24,6 +34,7 @@ class ObjectGame {
     getSprite(){ return this.sprite; }
 }
 
+// Text Object
 class TextObject {
     constructor(x,y,data) {
         this.text = basicText(data)
@@ -42,6 +53,12 @@ class TextObject {
 
 
 // ========================= Public Classes =====================================
+
+class GameBackground extends StaticObject {
+    constructor(x,y,width,height,spritePath) {
+        super(x,y,width,height,spritePath)
+    }
+}
 
 // TimeText
 class TimeText extends TextObject {
@@ -273,6 +290,7 @@ class Food extends ObjectGame {
 }
 
 export {
+    GameBackground,
     ShownObject,
     Food,
     Dish,

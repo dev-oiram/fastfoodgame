@@ -7,8 +7,8 @@ const optionsSize = 50
 
 const FoodDish = [
     { name:'burger', x:0, y: 0, reel:1 },
-    { name:'burrito', x:0, y: 0, reel:2 },
-    { name:'macncheese', x:0, y: 0, reel:3 }
+    { name:'frenchfries', x:0, y: 0, reel:2 },
+    { name:'friedegg', x:0, y: 0, reel:3 }
 ]
 
 // Static Object

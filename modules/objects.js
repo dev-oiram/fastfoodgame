@@ -1,6 +1,15 @@
+import { Container } from 'pixi.js-legacy'
 import { basicSprite, basicText } from './simpleSprite'
 
 // Private Classes
+
+const optionsSize = 50
+
+const FoodDish = [
+    { name:'burger', x:0, y: 0, reel:1 },
+    { name:'burrito', x:0, y: 0, reel:2 },
+    { name:'macncheese', x:0, y: 0, reel:3 }
+]
 
 // Static Object
 class StaticObject {
@@ -125,11 +134,40 @@ class Dish extends ObjectGame {
     }
 }
 
+class OneDish extends StaticObject {
+    constructor(x,y,width,height,spritePath,dish) {
+        super(x,y,width,height,spritePath)
+        this.content = new Container()
+
+        this.setup(x,y,dish)
+    }
+
+    setup(x,y,dish) {
+        this.content.addChild(this.sprite)
+        let sprt = basicSprite(FoodDish[dish].name,x+FoodDish[dish].x,y+FoodDish[dish].y,optionsSize,optionsSize)
+        this.content.addChild(sprt)
+        //this.dishContent = FoodDish[dish]
+        //this.sprite = basicSprite(spritePath,x,y,width,height)
+        // this.dishContent.forEach(el => {
+        //     let sprt = basicSprite(el.name,x+el.x,y+el.y,optionsSize,optionsSize)
+        //     this.content.addChild(sprt)
+        // });
+    }
+
+    getSprite() {
+        return this.content
+    }
+
+    update(delta) {}
+}
+
 
 // Food class Object
 class Food extends ObjectGame {
     constructor(x,y,width,height,spritePath,spritePathDish) {
         super(x,y,width,height,spritePath)
+
+        this.name = spritePath
         
         // Move variables
         this.velocity = 0
@@ -159,7 +197,7 @@ class Food extends ObjectGame {
 
     // Move DOWN
     down() {
-        if(!this.moving && this.reel < 4 && this.active){
+        if(!this.moving && this.reel < 3 && this.active){
             this.moveDown = true
             this.moving = true
         }
@@ -254,23 +292,25 @@ class Food extends ObjectGame {
 
         // Moving Right Sprite
         if(this.moveRight) {
-            if(this.sprite.x >= this.lastX + (450/2)){
-                if(this.sprite.x >= this.lastX + this.distance){
-                    //console.log("Position: "+this.sprite.y)
-                    this.spriteDish.visible = true
-                    this.sprite.visible = false
-                    this.lastX = this.spriteDish.x
-                    this.moveRight = false
-                    this.velocity = 0
-                    this.validate()
+            if(this.validarReel()) {
+                if(this.sprite.x >= this.lastX + (450/2)){
+                    if(this.sprite.x >= this.lastX + this.distance){
+                        //console.log("Position: "+this.sprite.y)
+                        this.spriteDish.visible = true
+                        this.sprite.visible = false
+                        this.lastX = this.spriteDish.x
+                        this.moveRight = false
+                        this.velocity = 0
+                        this.validate()
 
+                    }else{
+                        this.velocity -= this.acceleration * delta;
+                        this.sprite.x += this.speed * this.velocity * delta;
+                    }
                 }else{
-                    this.velocity -= this.acceleration * delta;
+                    this.velocity += this.acceleration * delta;
                     this.sprite.x += this.speed * this.velocity * delta;
                 }
-            }else{
-                this.velocity += this.acceleration * delta;
-                this.sprite.x += this.speed * this.velocity * delta;
             }
         }
 
@@ -280,9 +320,20 @@ class Food extends ObjectGame {
         }
     }
 
+    validarReel() {
+        let reel = FoodDish.find(el => el.reel == this.reel);
+        if(reel.name == this.name){
+            this.valid = true
+            return true
+        }
+        else{
+            this.valid = false
+            return false
+        }
+    }
+
     // Set Sprite validation
     validate() {
-        this.valid = true
         this.validating = true
     }
 
@@ -294,5 +345,6 @@ export {
     ShownObject,
     Food,
     Dish,
+    OneDish,
     TimeText
 }

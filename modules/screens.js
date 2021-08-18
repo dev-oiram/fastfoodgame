@@ -1,10 +1,12 @@
 import { Container } from 'pixi.js-legacy'
-import { GameBackground, ShownObject, Food, Dish, TimeText } from '../modules/objects'
+import { GameBackground, ShownObject, Food, Dish, OneDish, TimeText } from '../modules/objects'
 import { foodAssets, sound } from '../config/assets'
 import { config } from '../config/config'
 
 
 const sprtSize = 70
+const dishSize = 110
+const optionsSize = 40
 
 function randomNumber() {
     let min = 0
@@ -15,12 +17,13 @@ function randomNumber() {
 class GameScreen {
     constructor(stage) {
         this.container = new Container();
+        this.finish = false
         this.mainStage = stage;
         this.noIncome = false
         this.currentActiveFood = null
         this.currentArrayPosition = 0
         this.foodCount = 50
-        this.timeText = new TimeText(60,20,100) // Set Timer
+        this.timeText = new TimeText(60,20,30) // Set Timer
 
         this.loadBackground() // Load GameScreen Background
 
@@ -51,12 +54,24 @@ class GameScreen {
         this.objectArray = [
             //{ name: "Pie", data: new Food(100,150,sprtSize,sprtSize,"apple_pie","apple_pie_dish") },
             { name: "StopWatch", data: new ShownObject(30,30,50,50,"stopwatch") },
-            { name: "Dish", data: new Dish(250,150,sprtSize,sprtSize,"dish_pile") },
-            { name: "Dish", data: new Dish(250,263,sprtSize,sprtSize,"dish_pile") },
-            { name: "Dish", data: new Dish(250,391,sprtSize,sprtSize,"dish_pile") },
-            { name: "Dish", data: new Dish(250,511,sprtSize,sprtSize,"dish_pile") }
+            { name: "Dish", data: new OneDish(250,150,dishSize,dishSize,"dish2",0) },
+            { name: "Dish", data: new OneDish(250,263,dishSize,dishSize,"dish2",1) },
+            { name: "Dish", data: new OneDish(250,391,dishSize,dishSize,"dish2",2) },
+            // { name: "Dish", data: new OneDish(250,511,dishSize,dishSize,"dish2",3) }
         ]
         this.setup(); // Screen Init
+    }
+
+    getSocre() {
+        sound.stop('musicStart')
+        this.finish = true
+        let count = 0
+        this.incomeArray.forEach(el => {
+            if(el.valid)
+                count += 1
+        });
+        console.log(count)
+        console.log("GAMEOVER")
     }
 
     loadBackground() {
@@ -79,6 +94,7 @@ class GameScreen {
             this.currentArrayPosition ++
         }else{
             this.noIncome = true
+            this.getSocre()
         }
     }
 
@@ -164,23 +180,25 @@ class GameScreen {
     update(delta) {
         // Update objects on Screen
 
-        // Check for timeout
-        if(!this.timeText.getTimeOut() || this.noIncome){
-            this.objectArray.forEach((obj,index) => {
-                obj.data.update(delta)
-                if(obj.data.sprite.x > 700){
-                    this.objectArray.splice(index, 1);
-                    this.removeObject(obj.data)
-                }
-            });
-    
-            this.incomeArray.forEach((obj,index) => {
-                obj.update(delta)
-            });
-    
-            this.timeText.update(delta)
-        }else{
-            sound.stop('musicStart')
+        if(!this.finish){
+            // Check for timeout
+            if(!this.timeText.getTimeOut() || this.noIncome){
+                this.objectArray.forEach((obj,index) => {
+                    obj.data.update(delta)
+                    if(obj.data.sprite.x > 700){
+                        this.objectArray.splice(index, 1);
+                        this.removeObject(obj.data)
+                    }
+                });
+        
+                this.incomeArray.forEach((obj,index) => {
+                    obj.update(delta)
+                });
+        
+                this.timeText.update(delta)
+            }else{
+                this.getSocre()
+            }
         }
 
     }

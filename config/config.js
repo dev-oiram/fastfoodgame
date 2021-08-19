@@ -4,7 +4,7 @@ import { settings, GC_MODES, SCALE_MODES, Application, Loader, Ticker } from 'pi
 const config = {
     gameWidth: 800,
     gameHeight: 600,
-    color: 0x1099bb
+    color: 0xb200ff
 }
 
 // Garbage mode auto-activate

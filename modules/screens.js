@@ -1,5 +1,5 @@
 import { Container } from 'pixi.js-legacy'
-import { GameBackground, ShownObject, Food, Dish, OneDish, TimeText } from '../modules/objects'
+import { GameBackground, ShownObject, Food, Dish, OneDish, TimeText, Button_start } from '../modules/objects'
 import { foodAssets, sound } from '../config/assets'
 import { config } from '../config/config'
 
@@ -14,11 +14,110 @@ function randomNumber() {
     return parseInt(Math.random() * (max - min) + min)
 }
 
+// Game Title Screen
+class GameTitleScreen {
+    constructor(stage) {
+        this.container = new Container();
+        this.mainStage = stage;
+        this.active = true
+        this.gameScreen = false
+
+        this.setup()
+    }
+
+    setup() {
+        this.mainStage.addChild(this.container)
+        this.loadBackground()
+
+        this.btn_start = new Button_start(680,405,104,43,'btn_start').getSprite()
+        this.btn_start.on('pointerdown', this.click);
+        
+        this.container.addChild(this.btn_start)
+    }
+
+    click() {
+        alert("Iniciando...")
+    }
+
+    loadBackground() {
+        this.background = new GameBackground(config.gameWidth/2,config.gameHeight/2,
+            config.gameWidth,config.gameHeight,"backgroundTitle")
+
+        this.container.addChild(this.background.getSprite())
+    }
+
+    update(delta) {}
+}
+
+// Game Screen
 class GameScreen {
     constructor(stage) {
         this.container = new Container();
+        this.score = 0
         this.finish = false
+        this.init = true
         this.mainStage = stage;
+        this.noIncome = false
+        this.currentActiveFood = null
+        this.currentArrayPosition = 0
+        this.foodCount = 50
+        this.timeText = new TimeText(60,20,30) // Set Timer
+
+        
+        this.setup(); // Screen Init
+    }
+
+    finishGame() {
+        sound.stop('musicStart')
+        this.finish = true
+        let count = 0
+        this.incomeArray.forEach(el => {
+            if(el.valid)
+                count += 1
+        });
+        this.score = count
+        this.timeText.setTimeOut() // Stop timer
+    }
+
+    loadBackground() {
+        this.background = new GameBackground(config.gameWidth/2,config.gameHeight/2,
+            config.gameWidth,config.gameHeight,"background")
+
+        this.container.addChild(this.background.getSprite())
+    }
+
+    // Sets a new current food
+    setNewActive() {
+        if(this.currentArrayPosition <= this.incomeArray.length - 1){
+            this.incomeArray.forEach(obj => {
+                if(!obj.getActive())
+                    obj.left()
+            });
+            let newFoodActive = this.incomeArray[this.currentArrayPosition]
+            newFoodActive.setActive(true)
+            this.currentActiveFood = newFoodActive
+            this.currentArrayPosition ++
+        }else{
+            this.noIncome = true
+            this.finishGame()
+        }
+    }
+
+    // Method for getting object from objectArray
+    getObj(name) {
+        try{
+            let obj = this.objectArray.find(el => el.name == name).data
+            return obj
+        }
+        catch{
+            console.error("Error: No object name -> " + name)
+        }
+    }
+
+    // Screen init
+    setup() {
+        this.score = 0
+        this.finish = false
         this.noIncome = false
         this.currentActiveFood = null
         this.currentArrayPosition = 0
@@ -59,59 +158,9 @@ class GameScreen {
             { name: "Dish", data: new OneDish(250,391,dishSize,dishSize,"dish2",2) },
             // { name: "Dish", data: new OneDish(250,511,dishSize,dishSize,"dish2",3) }
         ]
-        this.setup(); // Screen Init
-    }
 
-    getSocre() {
-        sound.stop('musicStart')
-        this.finish = true
-        let count = 0
-        this.incomeArray.forEach(el => {
-            if(el.valid)
-                count += 1
-        });
-        console.log(count)
-        console.log("GAMEOVER")
-    }
 
-    loadBackground() {
-        this.background = new GameBackground(config.gameWidth/2,config.gameHeight/2,
-            config.gameWidth,config.gameHeight,"background")
-
-        this.container.addChild(this.background.getSprite())
-    }
-
-    // Sets a new current food
-    setNewActive() {
-        if(this.currentArrayPosition <= this.incomeArray.length - 1){
-            this.incomeArray.forEach(obj => {
-                if(!obj.getActive())
-                    obj.left()
-            });
-            let newFoodActive = this.incomeArray[this.currentArrayPosition]
-            newFoodActive.setActive(true)
-            this.currentActiveFood = newFoodActive
-            this.currentArrayPosition ++
-        }else{
-            this.noIncome = true
-            this.getSocre()
-        }
-    }
-
-    // Method for getting object from objectArray
-    getObj(name) {
-        try{
-            let obj = this.objectArray.find(el => el.name == name).data
-            return obj
-        }
-        catch{
-            console.error("Error: No object name -> " + name)
-        }
-    }
-
-    // Screen init
-    setup() {
-        sound.play('musicStart',{loop:true})
+        //sound.play('musicStart',{loop:true})
 
         // Timer
         this.container.addChild(this.timeText.getText())
@@ -180,30 +229,35 @@ class GameScreen {
     update(delta) {
         // Update objects on Screen
 
-        if(!this.finish){
-            // Check for timeout
-            if(!this.timeText.getTimeOut() || this.noIncome){
-                this.objectArray.forEach((obj,index) => {
-                    obj.data.update(delta)
-                    if(obj.data.sprite.x > 700){
-                        this.objectArray.splice(index, 1);
-                        this.removeObject(obj.data)
-                    }
-                });
-        
-                this.incomeArray.forEach((obj,index) => {
-                    obj.update(delta)
-                });
-        
-                this.timeText.update(delta)
-            }else{
-                this.getSocre()
-            }
+        if(this.init) {
+            this.init = false
+            this.setup()
         }
 
+        this.objectArray.forEach((obj,index) => {
+            obj.data.update(delta)
+            if(obj.data.sprite.x > 700){
+                this.objectArray.splice(index, 1);
+                this.removeObject(obj.data)
+            }
+        });
+    
+        this.incomeArray.forEach((obj,index) => {
+            obj.update(delta)
+        });
+    
+        this.timeText.update(delta)
+
+
+        // Check for timeout
+        if(this.timeText.getTimeOut() || this.noIncome){
+            if(!this.finish)
+                this.finishGame()
+        }
     }
 }
 
 export {
-    GameScreen
+    GameScreen,
+    GameTitleScreen
 }

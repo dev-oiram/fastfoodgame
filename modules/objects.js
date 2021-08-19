@@ -11,6 +11,10 @@ const FoodDish = [
     { name:'friedegg', x:0, y: 0, reel:3 }
 ]
 
+function toRadians (angle) {
+    return angle * (Math.PI / 180);
+}
+
 // Static Object
 class StaticObject {
     constructor(x,y,width,height,spritePath) {
@@ -63,6 +67,27 @@ class TextObject {
 
 // ========================= Public Classes =====================================
 
+class Button_start extends StaticObject {
+    constructor(x,y,width,height,spritePath) {
+        super(x,y,width,height,spritePath)
+        
+        this.setup()
+    }
+
+    setup() {
+        // Opt-in to interactivity
+        this.sprite.interactive = true;
+
+        // Shows hand cursor
+        this.sprite.buttonMode = true;
+
+        // Pointers normalize touch and mouse
+        // this.sprite.on('pointerdown', this.onClick);
+    }
+    
+}
+
+
 class GameBackground extends StaticObject {
     constructor(x,y,width,height,spritePath) {
         super(x,y,width,height,spritePath)
@@ -75,6 +100,7 @@ class TimeText extends TextObject {
         super(x,y,start)
         this.timeOut = false
         this.limit = start
+        this.time = 0
 
         setInterval(() =>{
             this.limit -= 1
@@ -88,10 +114,13 @@ class TimeText extends TextObject {
             }else {
                 this.timeOut = true
             }
+            this.time = this.limit
         }
     }
 
     getTimeOut() { return this.timeOut }
+    setTimeOut() { this.timeOut = true }
+    getTime() { return this.time }
 
 
     update(delta) {
@@ -146,12 +175,6 @@ class OneDish extends StaticObject {
         this.content.addChild(this.sprite)
         let sprt = basicSprite(FoodDish[dish].name,x+FoodDish[dish].x,y+FoodDish[dish].y,optionsSize,optionsSize)
         this.content.addChild(sprt)
-        //this.dishContent = FoodDish[dish]
-        //this.sprite = basicSprite(spritePath,x,y,width,height)
-        // this.dishContent.forEach(el => {
-        //     let sprt = basicSprite(el.name,x+el.x,y+el.y,optionsSize,optionsSize)
-        //     this.content.addChild(sprt)
-        // });
     }
 
     getSprite() {
@@ -188,6 +211,8 @@ class Food extends ObjectGame {
         this.lastX = x
         this.reel = 1
         this.distance = 120
+        this.time = 0
+        this.angle = 0
 
         // additional Sprites
         this.spriteDish = basicSprite(spritePathDish,x,y,
@@ -311,6 +336,11 @@ class Food extends ObjectGame {
                     this.velocity += this.acceleration * delta;
                     this.sprite.x += this.speed * this.velocity * delta;
                 }
+            }else{
+                this.angle = 35
+                this.sprite.x = (17*this.time*Math.cos(toRadians(this.angle))) + this.lastX;
+				this.sprite.y = (17*-this.time*Math.sin(toRadians(this.angle))) - (0.5 * -1 * this.time*this.time) + this.lastY;
+				this.time += 0.7*delta;
             }
         }
 
@@ -327,7 +357,6 @@ class Food extends ObjectGame {
             return true
         }
         else{
-            this.valid = false
             return false
         }
     }
@@ -346,5 +375,6 @@ export {
     Food,
     Dish,
     OneDish,
-    TimeText
+    TimeText,
+    Button_start
 }

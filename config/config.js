@@ -1,4 +1,4 @@
-import { settings, GC_MODES, Application, Loader, Ticker } from 'pixi.js-legacy';
+import { settings, GC_MODES, SCALE_MODES, Application, Loader, Ticker } from 'pixi.js-legacy';
 
 // Game config object
 const config = {
@@ -9,6 +9,9 @@ const config = {
 
 // Garbage mode auto-activate
 settings.GC_MODE = GC_MODES.AUTO
+
+// Scale mode for all textures, will retain pixelation
+settings.SCALE_MODE = SCALE_MODES.NEAREST;
 
 //Set Pixi Application
 var app = new Application(config.gameWidth, config.gameHeight);

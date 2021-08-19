@@ -1,6 +1,6 @@
 import { gameApp, stage, loader } from './config/config'
 import { assets } from './config/assets'
-import { GameScreen } from './modules/screens'
+import { GameScreen, GameTitleScreen } from './modules/screens'
 
 
 // Adds the app canvas to the html <body>
@@ -15,10 +15,15 @@ loader
 // Start Game
 function start() {
     // Creacion de Screens
+    let titleScreen = new GameTitleScreen(stage)
     let gameScreen = new GameScreen(stage)
+    gameScreen.container.visible = false
+    
 
     gameApp.ticker.add((deltaTime) => {
         // Update Loop
         gameScreen.update(deltaTime)
+        titleScreen.update(deltaTime)
+        
     });
 }

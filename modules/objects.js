@@ -369,7 +369,7 @@ class Food extends ObjectGame {
         let reel = FoodDish.find(el => el.reel == this.reel);
         if(reel.name == this.name){
             if(this.correctSound){
-                sound.play('correctSound',{volume:0.25})
+                sound.play('correctSound',{volume:0.20})
                 this.correctSound = false
             }
             this.valid = true

@@ -30,6 +30,9 @@ const foodAssets = [
 ]
 
 var assets = [
+    // Animations
+    { name: "idle_wiz", url: "../assets/idle_wiz.json" },
+    { name: "victory_dance", url: "../assets/victory_dance.json" },
     // Additional Assets
     { name: "background", url: "../assets/background.png" },
     { name: "backgroundTitle", url: "../assets/title_instructions.png" },
@@ -46,6 +49,9 @@ var assets = [
     { name: "gameMusic", url: "../assets/sounds/GameOn.mp3" },
     { name: "titleScreen", url: "../assets/sounds/titleScreen.mp3" },
     { name: "victory", url: "../assets/sounds/victory.mp3" },
+    { name: "move", url: "../assets/sounds/move.wav" },
+    { name: "correct", url: "../assets/sounds/correct.wav" },
+    { name: "wrong", url: "../assets/sounds/wrong.wav" },
 ]
 
 assets.push(...foodAssets)
@@ -53,7 +59,10 @@ assets.push(...foodAssets)
 
 // Load Sounds & Music
 sound.add('musicStart', '../assets/sounds/GameOn.mp3');
-sound.add('titleMusic', '../assets/sounds/titleScreen.mp3')
-sound.add('victoryMusic', '../assets/sounds/victory.mp3')
+sound.add('titleMusic', '../assets/sounds/titleScreen.mp3');
+sound.add('victoryMusic', '../assets/sounds/victory.mp3');
+sound.add('moveSound', '../assets/sounds/move.wav');
+sound.add('correctSound', '../assets/sounds/correct.wav');
+sound.add('wrongSound', '../assets/sounds/wrong.wav');
 
 export { assets, foodAssets, sound }

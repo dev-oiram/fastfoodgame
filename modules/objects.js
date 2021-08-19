@@ -1,6 +1,8 @@
 import { Container } from 'pixi.js-legacy'
 import { basicSprite, basicText } from './simpleSprite'
 
+import { sound } from '../config/assets'
+
 // Private Classes
 
 const optionsSize = 50
@@ -221,6 +223,10 @@ class Food extends ObjectGame {
         this.time = 0
         this.angle = 0
 
+        // Sound Flag
+        this.correctSound = true
+        this.wrongSound = true
+
         // additional Sprites
         this.spriteDish = basicSprite(spritePathDish,x,y,
             width,height)
@@ -232,6 +238,7 @@ class Food extends ObjectGame {
         if(!this.moving && this.reel < 3 && this.active){
             this.moveDown = true
             this.moving = true
+            //sound.play('moveSound',{volume:0.20})
         }
     }
 
@@ -240,6 +247,7 @@ class Food extends ObjectGame {
         if(!this.moving && this.reel > 1 && this.active){
             this.moveUp = true
             this.moving = true
+            //sound.play('moveSound',{volume:0.20})
         }
     }
 
@@ -360,10 +368,18 @@ class Food extends ObjectGame {
     validarReel() {
         let reel = FoodDish.find(el => el.reel == this.reel);
         if(reel.name == this.name){
+            if(this.correctSound){
+                sound.play('correctSound',{volume:0.25})
+                this.correctSound = false
+            }
             this.valid = true
             return true
         }
         else{
+            if(this.wrongSound){
+                sound.play('wrongSound')
+                this.wrongSound = false
+            }
             return false
         }
     }

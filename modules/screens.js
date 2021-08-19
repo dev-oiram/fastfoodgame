@@ -3,6 +3,8 @@ import { GameBackground, ShownObject, Food, Dish, OneDish, TimeText, ScoreText, 
 import { foodAssets, sound } from '../config/assets'
 import { config } from '../config/config'
 
+import { animSprite } from '../modules/simpleSprite'
+
 
 const sprtSize = 70
 const dishSize = 110
@@ -29,7 +31,7 @@ class GameTitleScreen {
         this.active = true
         this.gameScreen = false
 
-        sound.play('titleMusic',{loop:true})
+        sound.play('titleMusic',{loop:true,volume:0.50})
         this.mainStage.addChild(this.container)
         this.loadBackground()
 
@@ -72,7 +74,7 @@ class GameScreen {
         this.currentActiveFood = null
         this.currentArrayPosition = 0
         this.foodCount = 50
-        this.timeText = new TimeText(60,20,30) // Set Timer
+        this.timeText = new TimeText(60,20,27) // Set Timer
 
         //Score Screen
         this.scoreScreen = new Container();
@@ -95,8 +97,16 @@ class GameScreen {
             this.active = false
             this.initActive = true
         });
+
+        // ============ Animation Sprites =========================
+        this.anim1 = animSprite('sprite',280,350,128,128,5,0.08)
+        this.anim1.play()
+
+        this.anim2 = animSprite('pin',500,170,64,64,5,0.08)
+        this.anim2.play()
+        // ============ Animation Sprites =========================
         
-        this.winnerScreen.addChild(this.winner_background.getSprite(),this.btn_ok)
+        this.winnerScreen.addChild(this.winner_background.getSprite(),this.btn_ok,this.anim1,this.anim2)
     }
 
     setScoreScreen() {
@@ -187,7 +197,7 @@ class GameScreen {
         this.currentActiveFood = null
         this.currentArrayPosition = 0
         this.foodCount = 50
-        this.timeText = new TimeText(60,20,30) // Set Timer
+        this.timeText = new TimeText(60,20,27) // Set Timer
 
         this.loadBackground() // Load GameScreen Background
 
@@ -225,7 +235,7 @@ class GameScreen {
         ]
 
 
-        sound.play('musicStart',{loop:true})
+        sound.play('musicStart',{loop:true,volume:0.10})
 
         // Timer
         this.container.addChild(this.timeText.getText())

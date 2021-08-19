@@ -3,6 +3,10 @@ import { assets } from './config/assets'
 import { GameScreen, GameTitleScreen } from './modules/screens'
 
 
+//SPRITE JSON ANIMATION CREATRION TOOL
+// https://www.leshylabs.com/apps/sstool/
+
+
 // Adds the app canvas to the html <body>
 document.body.appendChild(gameApp.view);
 

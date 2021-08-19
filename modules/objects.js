@@ -67,6 +67,13 @@ class TextObject {
 
 // ========================= Public Classes =====================================
 
+class ScoreText extends TextObject {
+    constructor(x,y,score) {
+        super(x,y,score)
+        this.text.anchor.set(0.5)
+    }
+}
+
 class Button_start extends StaticObject {
     constructor(x,y,width,height,spritePath) {
         super(x,y,width,height,spritePath)
@@ -376,5 +383,6 @@ export {
     Dish,
     OneDish,
     TimeText,
+    ScoreText,
     Button_start
 }

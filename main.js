@@ -24,6 +24,14 @@ function start() {
         // Update Loop
         gameScreen.update(deltaTime)
         titleScreen.update(deltaTime)
-        
+
+        if(titleScreen.gameScreen && titleScreen.active){
+          titleScreen.container.visible = false
+          titleScreen.active = false
+          
+          gameScreen.container.visible =true
+          gameScreen.init =  true
+        }
+
     });
 }

@@ -1,5 +1,5 @@
 import { Container } from 'pixi.js-legacy'
-import { GameBackground, ShownObject, Food, Dish, OneDish, TimeText, Button_start } from '../modules/objects'
+import { GameBackground, ShownObject, Food, Dish, OneDish, TimeText, ScoreText, Button_start } from '../modules/objects'
 import { foodAssets, sound } from '../config/assets'
 import { config } from '../config/config'
 
@@ -26,17 +26,17 @@ class GameTitleScreen {
     }
 
     setup() {
+        sound.play('titleMusic',{loop:true})
         this.mainStage.addChild(this.container)
         this.loadBackground()
 
         this.btn_start = new Button_start(680,405,104,43,'btn_start').getSprite()
-        this.btn_start.on('pointerdown', this.click);
+        this.btn_start.on('pointerdown', () => {
+            this.gameScreen = true
+            sound.stop('titleMusic')
+        });
         
         this.container.addChild(this.btn_start)
-    }
-
-    click() {
-        alert("Iniciando...")
     }
 
     loadBackground() {
@@ -55,7 +55,8 @@ class GameScreen {
         this.container = new Container();
         this.score = 0
         this.finish = false
-        this.init = true
+        this.init = false
+        this.active = false
         this.mainStage = stage;
         this.noIncome = false
         this.currentActiveFood = null
@@ -63,8 +64,35 @@ class GameScreen {
         this.foodCount = 50
         this.timeText = new TimeText(60,20,30) // Set Timer
 
+        //Score Screen
+        this.scoreScreen = new Container();
+        this.scoreScreen.visible = false
+        this.setScoreScreen()
+
+        //Victory Screen
+        this.setVictoryScreen()
+
+    }
+
+    setVictoryScreen() {
+
+    }
+
+    setScoreScreen() {
+        this.score_background = new GameBackground(config.gameWidth/2,config.gameHeight/2,
+            config.gameWidth,config.gameHeight,"scoreScreen")
+
+        this.btn_start = new Button_start(530,320,104,43,'btn_start').getSprite()
+        this.btn_start.on('pointerdown', () => {
+            this.scoreScreen.visible = false
+            this.init = true
+        });
         
-        this.setup(); // Screen Init
+        this.scoreTime = new ScoreText(432,275,"0")
+        this.scoreCount = new ScoreText(432,375,"0")
+
+        this.scoreScreen.addChild(this.score_background.getSprite(),this.scoreTime.getText(),this.scoreCount.getText(),this.btn_start)
+    
     }
 
     finishGame() {
@@ -77,6 +105,12 @@ class GameScreen {
         });
         this.score = count
         this.timeText.setTimeOut() // Stop timer
+        if(this.timeText.getTime() < 0)
+            this.scoreTime.setText("TimeOut")
+        else
+            this.scoreTime.setText(this.timeText.getTime())
+        this.scoreCount.setText(this.score+"/50")
+        this.scoreScreen.visible = true
     }
 
     loadBackground() {
@@ -160,7 +194,7 @@ class GameScreen {
         ]
 
 
-        //sound.play('musicStart',{loop:true})
+        sound.play('musicStart',{loop:true})
 
         // Timer
         this.container.addChild(this.timeText.getText())
@@ -204,6 +238,10 @@ class GameScreen {
             }
         }
         // ============== KEY ACTIONS ======================
+
+        
+        // Set Score Screen at last
+        this.container.addChild(this.scoreScreen)
     }
 
     setActive(status) {
@@ -231,28 +269,32 @@ class GameScreen {
 
         if(this.init) {
             this.init = false
+            this.active = true
             this.setup()
         }
 
-        this.objectArray.forEach((obj,index) => {
-            obj.data.update(delta)
-            if(obj.data.sprite.x > 700){
-                this.objectArray.splice(index, 1);
-                this.removeObject(obj.data)
+
+        if(this.active){
+            this.objectArray.forEach((obj,index) => {
+                obj.data.update(delta)
+                if(obj.data.sprite.x > 700){
+                    this.objectArray.splice(index, 1);
+                    this.removeObject(obj.data)
+                }
+            });
+        
+            this.incomeArray.forEach((obj,index) => {
+                obj.update(delta)
+            });
+        
+            this.timeText.update(delta)
+
+
+            // Check for timeout
+            if(this.timeText.getTimeOut() || this.noIncome){
+                if(!this.finish)
+                    this.finishGame()
             }
-        });
-    
-        this.incomeArray.forEach((obj,index) => {
-            obj.update(delta)
-        });
-    
-        this.timeText.update(delta)
-
-
-        // Check for timeout
-        if(this.timeText.getTimeOut() || this.noIncome){
-            if(!this.finish)
-                this.finishGame()
         }
     }
 }

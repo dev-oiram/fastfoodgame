@@ -29,8 +29,16 @@ function start() {
           titleScreen.container.visible = false
           titleScreen.active = false
           
-          gameScreen.container.visible =true
+          gameScreen.container.visible = true
           gameScreen.init =  true
+        }
+
+        if(gameScreen.titleScreen && gameScreen.initActive){
+          gameScreen.container.visible = false
+          gameScreen.initActive = false
+
+          titleScreen.container.visible = true
+          titleScreen.init = true
         }
 
     });

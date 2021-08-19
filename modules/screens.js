@@ -21,11 +21,14 @@ class GameTitleScreen {
         this.mainStage = stage;
         this.active = true
         this.gameScreen = false
+        this.init = true
 
-        this.setup()
     }
 
     setup() {
+        this.active = true
+        this.gameScreen = false
+
         sound.play('titleMusic',{loop:true})
         this.mainStage.addChild(this.container)
         this.loadBackground()
@@ -46,16 +49,23 @@ class GameTitleScreen {
         this.container.addChild(this.background.getSprite())
     }
 
-    update(delta) {}
+    update(delta) {
+        if(this.init) {
+            this.init = false
+            this.setup()
+        }
+    }
 }
 
 // Game Screen
 class GameScreen {
     constructor(stage) {
         this.container = new Container();
+        this.titleScreen = false
         this.score = 0
         this.finish = false
         this.init = false
+        this.initActive = false
         this.active = false
         this.mainStage = stage;
         this.noIncome = false
@@ -66,23 +76,34 @@ class GameScreen {
 
         //Score Screen
         this.scoreScreen = new Container();
-        this.scoreScreen.visible = false
         this.setScoreScreen()
 
         //Victory Screen
+        this.winnerScreen = new Container();
         this.setVictoryScreen()
 
     }
 
     setVictoryScreen() {
+        this.winner_background = new GameBackground(config.gameWidth/2,config.gameHeight/2,
+            config.gameWidth,config.gameHeight,"winnerScreen")
 
+        this.btn_ok = new Button_start(415,430,104,43,'btn_ok').getSprite()
+        this.btn_ok.on('pointerdown', () => {
+            sound.stop('victoryMusic')
+            this.titleScreen = true
+            this.active = false
+            this.initActive = true
+        });
+        
+        this.winnerScreen.addChild(this.winner_background.getSprite(),this.btn_ok)
     }
 
     setScoreScreen() {
         this.score_background = new GameBackground(config.gameWidth/2,config.gameHeight/2,
             config.gameWidth,config.gameHeight,"scoreScreen")
 
-        this.btn_start = new Button_start(530,320,104,43,'btn_start').getSprite()
+        this.btn_start = new Button_start(535,320,104,43,'btn_ok').getSprite()
         this.btn_start.on('pointerdown', () => {
             this.scoreScreen.visible = false
             this.init = true
@@ -105,12 +126,21 @@ class GameScreen {
         });
         this.score = count
         this.timeText.setTimeOut() // Stop timer
-        if(this.timeText.getTime() < 0)
+        if(this.timeText.getTime() <= 0)
             this.scoreTime.setText("TimeOut")
         else
             this.scoreTime.setText(this.timeText.getTime())
+        
         this.scoreCount.setText(this.score+"/50")
-        this.scoreScreen.visible = true
+
+        // Check for Victory or GameOver
+        if(this.score == 50 && this.timeText.getTime() >= 0){
+            sound.play('victoryMusic',{loop:true})
+            this.winnerScreen.visible = true
+        }else{
+            this.scoreScreen.visible = true
+        }
+
     }
 
     loadBackground() {
@@ -150,6 +180,7 @@ class GameScreen {
 
     // Screen init
     setup() {
+        this.titleScreen = false
         this.score = 0
         this.finish = false
         this.noIncome = false
@@ -242,6 +273,9 @@ class GameScreen {
         
         // Set Score Screen at last
         this.container.addChild(this.scoreScreen)
+        this.container.addChild(this.winnerScreen)
+        this.winnerScreen.visible = false
+        this.scoreScreen.visible = false
     }
 
     setActive(status) {

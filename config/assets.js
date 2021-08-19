@@ -34,8 +34,10 @@ var assets = [
     { name: "background", url: "../assets/background.png" },
     { name: "backgroundTitle", url: "../assets/title_instructions.png" },
     { name: "scoreScreen", url: "../assets/scoreScreen.png" },
+    { name: "winnerScreen", url: "../assets/winnerScreen.png" },
     { name: "stopwatch", url: "../assets/stopwatch.png" },
     { name: "btn_start", url: "../assets/btn_start.png" },
+    { name: "btn_ok", url: "../assets/btn_ok.png" },
     // Dishes
     { name: "dish", url: "../assets/dish.png" },
     { name: "dish2", url: "../assets/dish2.png" },
@@ -43,6 +45,7 @@ var assets = [
     // Sound & Music
     { name: "gameMusic", url: "../assets/sounds/GameOn.mp3" },
     { name: "titleScreen", url: "../assets/sounds/titleScreen.mp3" },
+    { name: "victory", url: "../assets/sounds/victory.mp3" },
 ]
 
 assets.push(...foodAssets)
@@ -51,5 +54,6 @@ assets.push(...foodAssets)
 // Load Sounds & Music
 sound.add('musicStart', '../assets/sounds/GameOn.mp3');
 sound.add('titleMusic', '../assets/sounds/titleScreen.mp3')
+sound.add('victoryMusic', '../assets/sounds/victory.mp3')
 
 export { assets, foodAssets, sound }

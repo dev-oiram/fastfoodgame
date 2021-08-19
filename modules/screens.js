@@ -9,6 +9,7 @@ import { animSprite } from '../modules/simpleSprite'
 const sprtSize = 70
 const dishSize = 110
 const optionsSize = 40
+const timeRecord = 30 // Record: 27
 
 function randomNumber() {
     let min = 0
@@ -74,7 +75,7 @@ class GameScreen {
         this.currentActiveFood = null
         this.currentArrayPosition = 0
         this.foodCount = 50
-        this.timeText = new TimeText(60,20,27) // Set Timer
+        this.timeText = new TimeText(60,20,timeRecord) // Set Timer Record:27 (also line: 200)
 
         //Score Screen
         this.scoreScreen = new Container();
@@ -197,7 +198,7 @@ class GameScreen {
         this.currentActiveFood = null
         this.currentArrayPosition = 0
         this.foodCount = 50
-        this.timeText = new TimeText(60,20,27) // Set Timer
+        this.timeText = new TimeText(60,20,timeRecord) // Set Timer Record:27 (also line: 77)
 
         this.loadBackground() // Load GameScreen Background
 

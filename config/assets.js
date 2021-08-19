@@ -36,6 +36,7 @@ var assets = [
     // Additional Assets
     { name: "background", url: "../assets/background.png" },
     { name: "backgroundTitle", url: "../assets/title_instructions.png" },
+    { name: "prestartScreen", url: "../assets/prestartScreen.png" },
     { name: "scoreScreen", url: "../assets/scoreScreen.png" },
     { name: "winnerScreen", url: "../assets/winnerScreen.png" },
     { name: "stopwatch", url: "../assets/stopwatch.png" },

@@ -9,7 +9,7 @@ import { animSprite } from '../modules/simpleSprite'
 const sprtSize = 70
 const dishSize = 110
 const optionsSize = 40
-const timeRecord = 30 // Record: 27
+const timeRecord = 30 // Record: 25
 
 function randomNumber() {
     let min = 0
@@ -77,6 +77,10 @@ class GameScreen {
         this.foodCount = 50
         this.timeText = new TimeText(60,20,timeRecord) // Set Timer Record:27 (also line: 200)
 
+        // Pre-Start Screen
+        this.prestartScreen = new Container();
+        this.setprestartScreen()
+
         //Score Screen
         this.scoreScreen = new Container();
         this.setScoreScreen()
@@ -85,25 +89,45 @@ class GameScreen {
         this.winnerScreen = new Container();
         this.setVictoryScreen()
 
+        // Set main Container
+        this.mainStage.addChild(this.container)
+
+    }
+
+    setprestartScreen() {
+        this.prestart_background = new GameBackground(config.gameWidth/2,config.gameHeight/2,
+            config.gameWidth,config.gameHeight,"prestartScreen")
+
+        window.onkeyup = (key) => {
+            if(key.code == "KeyB" && this.prestartScreen.visible){
+                this.prestartScreen.visible = false
+                this.init = true
+            }
+        }
+        
+        this.prestartScreen.addChild(this.prestart_background.getSprite())
+        this.container.addChild(this.prestartScreen)
     }
 
     setVictoryScreen() {
         this.winner_background = new GameBackground(config.gameWidth/2,config.gameHeight/2,
             config.gameWidth,config.gameHeight,"winnerScreen")
 
-        this.btn_ok = new Button_start(415,430,104,43,'btn_ok').getSprite()
+        this.btn_ok = new Button_start(530,430,104,43,'btn_ok').getSprite()
         this.btn_ok.on('pointerdown', () => {
             sound.stop('victoryMusic')
+            this.winnerScreen.visible = false
             this.titleScreen = true
             this.active = false
             this.initActive = true
+            this.prestartScreen.visible = true
         });
 
         // ============ Animation Sprites =========================
-        this.anim1 = animSprite('sprite',280,350,128,128,5,0.08)
+        this.anim1 = animSprite('sprite',280,380,128,128,5,0.08)
         this.anim1.play()
 
-        this.anim2 = animSprite('pin',500,170,64,64,5,0.08)
+        this.anim2 = animSprite('pin',530,150,64,64,5,0.08)
         this.anim2.play()
         // ============ Animation Sprites =========================
         
@@ -117,17 +141,17 @@ class GameScreen {
         this.btn_start = new Button_start(535,320,104,43,'btn_ok').getSprite()
         this.btn_start.on('pointerdown', () => {
             this.scoreScreen.visible = false
-            this.init = true
+            this.prestartScreen.visible = true
         });
         
-        this.scoreTime = new ScoreText(432,275,"0")
+        this.scoreTime = new ScoreText(415,282,"0")
         this.scoreCount = new ScoreText(432,375,"0")
 
         this.scoreScreen.addChild(this.score_background.getSprite(),this.scoreTime.getText(),this.scoreCount.getText(),this.btn_start)
     
     }
 
-    finishGame() {
+    finishGame() {        
         sound.stop('musicStart')
         this.finish = true
         let count = 0
@@ -241,9 +265,6 @@ class GameScreen {
         // Timer
         this.container.addChild(this.timeText.getText())
 
-        // Set main Container
-        this.mainStage.addChild(this.container)
-
         // Set Object on Screen
         this.objectArray.forEach(obj => {
             this.container.addChild(obj.data.getSprite())
@@ -278,11 +299,18 @@ class GameScreen {
                     }
                 }
             }
+
+            if(key.code == "KeyB" && this.prestartScreen.visible){
+                this.prestartScreen.visible = false
+                this.init = true
+            }
         }
         // ============== KEY ACTIONS ======================
 
         
         // Set Score Screen at last
+        this.container.addChild(this.prestartScreen)
+
         this.container.addChild(this.scoreScreen)
         this.container.addChild(this.winnerScreen)
         this.winnerScreen.visible = false

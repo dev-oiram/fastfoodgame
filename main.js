@@ -34,7 +34,7 @@ function start() {
           titleScreen.active = false
           
           gameScreen.container.visible = true
-          gameScreen.init =  true
+          //gameScreen.init =  true
         }
 
         if(gameScreen.titleScreen && gameScreen.initActive){

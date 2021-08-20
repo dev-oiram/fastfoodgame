@@ -1,6 +1,9 @@
+import { Container } from 'pixi.js-legacy'
 import { gameApp, stage, loader } from './config/config'
 import { assets } from './config/assets'
 import { GameScreen, GameTitleScreen } from './modules/screens'
+
+import { basicSprite } from  './modules/simpleSprite'
 
 
 //SPRITE JSON ANIMATION CREATRION TOOL
@@ -10,14 +13,25 @@ import { GameScreen, GameTitleScreen } from './modules/screens'
 // Adds the app canvas to the html <body>
 document.body.appendChild(gameApp.view);
 
+
+// Set Loading Screen
+let loadingScreen = new Container()
+stage.addChild(loadingScreen)
+
+loader.onStart.add(() => {
+  let load_background = basicSprite('./assets/loadingScreen.png',800/2,600/2,800,600)
+  let emotes = basicSprite('./assets/emotes.png',380,200,400,40)
+  loadingScreen.addChild(load_background,emotes)
+})
+
 // Load assets and start Game
 loader
   .add(assets)
   .load(start);
 
-
 // Start Game
 function start() {
+    stage.removeChild(loadingScreen)
     // Creacion de Screens
     let titleScreen = new GameTitleScreen(stage)
     let gameScreen = new GameScreen(stage)

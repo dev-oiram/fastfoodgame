@@ -9,7 +9,7 @@ import { animSprite } from '../modules/simpleSprite'
 const sprtSize = 70
 const dishSize = 110
 const optionsSize = 40
-const timeRecord = 30 // Record: 25
+const timeRecord = 25 // Record: 25
 
 function randomNumber() {
     let min = 0
@@ -26,6 +26,21 @@ class GameTitleScreen {
         this.gameScreen = false
         this.init = true
 
+        this.creditsScreen = new Container()
+        this.setCreditScreen()
+
+    }
+
+    setCreditScreen() {
+        this.cretids_background = new GameBackground(config.gameWidth/2,config.gameHeight/2,
+            config.gameWidth,config.gameHeight,"creditsScreen")
+
+        this.btn_ok = new Button_start(540,430,104,43,'btn_ok').getSprite()
+        this.btn_ok.on('pointerdown', () => {
+            this.creditsScreen.visible = false
+        });
+        
+        this.creditsScreen.addChild(this.cretids_background.getSprite(),this.btn_ok)
     }
 
     setup() {
@@ -41,8 +56,17 @@ class GameTitleScreen {
             this.gameScreen = true
             sound.stop('titleMusic')
         });
+
+        this.btn_credits = new Button_start(680,470,104,43,'btn_credits').getSprite()
+        this.btn_credits.on('pointerdown', () => {
+            this.creditsScreen.visible = true
+        });
         
         this.container.addChild(this.btn_start)
+        this.container.addChild(this.btn_credits)
+
+        this.container.addChild(this.creditsScreen)
+        this.creditsScreen.visible = false
     }
 
     loadBackground() {

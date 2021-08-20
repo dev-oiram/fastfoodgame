@@ -39,9 +39,11 @@ var assets = [
     { name: "prestartScreen", url: "../assets/prestartScreen.png" },
     { name: "scoreScreen", url: "../assets/scoreScreen.png" },
     { name: "winnerScreen", url: "../assets/winnerScreen.png" },
+    { name: "creditsScreen", url: "../assets/creditsScreen.png" },
     { name: "stopwatch", url: "../assets/stopwatch.png" },
     { name: "btn_start", url: "../assets/btn_start.png" },
     { name: "btn_ok", url: "../assets/btn_ok.png" },
+    { name: "btn_credits", url: "../assets/btn_credits.png" },
     // Dishes
     { name: "dish", url: "../assets/dish.png" },
     { name: "dish2", url: "../assets/dish2.png" },

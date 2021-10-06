@@ -6,6 +6,12 @@
 - You only have 25 seconds to deliver all food.
 - Play the game [HERE](https://fastfoodgame.netlify.app/)
 
+## Installation
+- Install depencies  
+`npm run install`  
+- Run the game  
+`npm run dev`
+
 ## ScreenShot
 ![fastfoodGame](https://user-images.githubusercontent.com/84867933/136267349-6ed2d031-79c9-4e7d-9b83-8c755dded811.png)
 

@@ -7,7 +7,7 @@
 - Play the game [HERE](https://fastfoodgame.netlify.app/)
 
 ## Installation
-- Install depencies  
+- Install dependencies
 `npm run install`  
 - Run the game  
 `npm run dev`
